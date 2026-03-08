@@ -1,4 +1,4 @@
-public class Demo
+public class Demo       // conditional statements
 {
    public static void main(String[] args)
    {
