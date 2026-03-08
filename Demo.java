@@ -1,12 +1,18 @@
-public class Demo       // Ternary Operator
+public class Demo       // Conditonal statements
 {
    public static void main(String[] args)
    {
-       int n = 4;
-       int result = 0;
+        int x = 8;
+        int y = 7;
+        int z = 9;
 
-       result = (n % 2 == 0) ? 10 : 20;
-       System.out.println("The result is: " + result);
-
+        if(x>10)
+            System.out.println("hello");
+        if(x>5 && x<20)
+            System.out.println("hi");
+        else if(y>z)
+            System.out.println("Welcome");
+        else 
+            System.out.println("Bye");
    } 
 }
