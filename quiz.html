@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python Quiz</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f4f9;
+  margin: 0;
+  padding: 0;
+}
+
+/* Navbar */
+.navbar {
+  width: 100%;
+  background-color: #023e8a;
+  color: white;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.navbar h2 { margin: 0; }
+.navbar button { padding: 8px 16px; cursor: pointer; }
+
+/* Quiz container */
+.quiz-container {
+  max-width: 600px;
+  margin: 50px auto;
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+  text-align: center;
+}
+
+/* Level selection */
+.level-btn {
+  padding: 12px 20px;
+  margin: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  background-color: #90e0ef;
+  cursor: pointer;
+}
+.level-btn:hover { background-color: #0077b6; color: white; }
+
+.options button {
+  display: block;
+  width: 100%;
+  margin: 10px 0;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background-color: #90e0ef;
+  font-size: 16px;
+}
+.options button:hover { background-color: #0077b6; color: white; }
+
+.feedback {
+  margin-top: 15px;
+  font-weight: bold;
+}
+.feedback.correct { color: green; }
+.feedback.wrong { color: red; }
+
+.score { text-align: center; font-size: 20px; margin-top: 20px; }
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <h2>Python Quiz</h2>
+  <button onclick="logout()">Logout</button>
+</div>
+
+<div class="quiz-container" id="quizContainer">
+  <h3>Select Starting Level:</h3>
+  <div id="levelSelection">
+    <button class="level-btn" onclick="startQuiz('easy')">Easy</button>
+    <button class="level-btn" onclick="startQuiz('medium')">Medium</button>
+    <button class="level-btn" onclick="startQuiz('hard')">Hard</button>
+  </div>
+
+  <div id="quizSection" style="display:none;">
+    <h3 id="question"></h3>
+    <div class="options" id="options"></div>
+    <div class="feedback" id="feedback"></div>
+  </div>
+</div>
+
+<div class="score" id="scoreContainer" style="display:none;"></div>
+
+<script>
+// ✅ Check login
+if(localStorage.getItem("isLoggedIn") !== "true") {
+  window.location.href = "login.html";
+}
+
+// ✅ Questions (Easy → Medium → Hard)
+const questions = [
+  // Easy
+  {question: "What is the output of: print(2 + 3)?", options: ["23","5","Error","None"], answer: "5", level: "easy"},
+  {question: "Which of these is a Python keyword?", options: ["function","if","define","switch"], answer: "if", level: "easy"},
+  {question: "What symbol is used for comments in Python?", options: ["//","#","/*","$"], answer: "#", level: "easy"},
+
+  // Medium
+  {question: "What does len([1,2,3,4]) return?", options: ["3","4","5","Error"], answer: "4", level: "medium"},
+  {question: "Which of these data types is mutable?", options: ["tuple","list","string","int"], answer: "list", level: "medium"},
+  {question: "What is the output: print(3*'ab')?", options: ["ababab","ab*3","Error","3ab"], answer: "ababab", level: "medium"},
+
+  // Hard
+  {question: "What is the output of: print([i**2 for i in range(3)])?", options: ["[1,4,9]","[0,1,4]","[0,1,2]","[1,2,3]"], answer: "[0,1,4]", level: "hard"},
+  {question: "Which statement is used to handle exceptions?", options: ["try-except","handle","catch","error"], answer: "try-except", level: "hard"},
+  {question: "What is the output: print(type(lambda x:x))?", options: ["function","lambda","method","object"], answer: "function", level: "hard"}
+];
+
+// Quiz state
+let currentLevel;
+let score = 0;
+let askedQuestions = [];
+let currentQuestion;
+
+// ✅ Start quiz with selected level
+function startQuiz(level) {
+  currentLevel = level;
+  document.getElementById("levelSelection").style.display = "none";
+  document.getElementById("quizSection").style.display = "block";
+  showQuestion();
+}
+
+// ✅ Show Question
+function showQuestion() {
+  const availableQuestions = questions.filter(q => q.level === currentLevel && !askedQuestions.includes(q));
+
+  if(availableQuestions.length === 0) {
+    // Move to next level if current finished
+    if(currentLevel === "easy") currentLevel = "medium";
+    else if(currentLevel === "medium") currentLevel = "hard";
+    else return endQuiz();
+
+    showQuestion();
+    return;
+  }
+
+  currentQuestion = availableQuestions[Math.floor(Math.random() * availableQuestions.length)];
+  askedQuestions.push(currentQuestion);
+
+  document.getElementById("question").textContent = currentQuestion.question;
+  document.getElementById("feedback").textContent = "";
+
+  const optionsDiv = document.getElementById("options");
+  optionsDiv.innerHTML = "";
+
+  currentQuestion.options.forEach(opt => {
+    const btn = document.createElement("button");
+    btn.textContent = opt;
+    btn.onclick = function() { checkAnswer(opt, currentQuestion.answer); };
+    optionsDiv.appendChild(btn);
+  });
+}
+
+// ✅ Check Answer
+function checkAnswer(selected, correct) {
+  const feedbackDiv = document.getElementById("feedback");
+
+  if(selected === correct) {
+    score++;
+    feedbackDiv.textContent = "Correct!";
+    feedbackDiv.className = "feedback correct";
+  } else {
+    feedbackDiv.textContent = `Wrong! Correct answer is: ${correct}`;
+    feedbackDiv.className = "feedback wrong";
+  }
+
+  // Wait 1 second and show next question
+  setTimeout(showQuestion, 1000);
+}
+
+// ✅ End Quiz
+function endQuiz() {
+  document.getElementById("quizContainer").style.display = "none";
+  const scoreDiv = document.getElementById("scoreContainer");
+  scoreDiv.style.display = "block";
+  scoreDiv.textContent = `Quiz Finished! Your Score: ${score} / ${askedQuestions.length}`;
+}
+
+// ✅ Logout
+function logout() {
+  localStorage.removeItem("isLoggedIn");
+  window.location.href = "login.html";
+}
+</script>
+
+</body>
+</html>
