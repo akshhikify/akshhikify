@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #00BFFF, #87CEFA);
+    color: #333;
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 20px;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+}
+
+.navbar h2 {
+    margin: 0;
+    color: #0077b6;
+}
+
+.navbar button {
+    background: #0077b6;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.navbar button:hover {
+    background: #023e8a;
+}
+
+/* Hero Section */
+.hero {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.hero h1 {
+    font-size: 42px;
+    color: #023e8a;
+}
+
+.hero p {
+    font-size: 18px;
+    color: #03045e;
+}
+
+/* Search Box */
+.search-box {
+    margin-top: 20px;
+}
+
+.search-box input {
+    padding: 12px;
+    width: 60%;
+    border-radius: 25px 0 0 25px;
+    border: none;
+    outline: none;
+}
+
+.search-box button {
+    padding: 12px;
+    border: none;
+    background: #0077b6;
+    color: white;
+    border-radius: 0 25px 25px 0;
+    cursor: pointer;
+}
+
+.search-box button:hover {
+    background: #023e8a;
+}
+
+/* Subjects Section */
+.subjects {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.subjects h2 {
+    margin-bottom: 20px;
+    color: #023e8a;
+}
+
+/* Cards */
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.card {
+    background: white;
+    color: #333;
+    margin: 15px;
+    padding: 20px;
+    width: 200px;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 18px;
+    font-weight: bold;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.card:hover {
+    transform: scale(1.08);
+    background: #0077b6;
+    color: white;
+}
+</style>
+</head>
+
+<body>
+
+<!-- ✅ Navbar with Navigation -->
+<div class="navbar">
+    <h2>AI Quiz</h2>
+    <a href="/login">
+    <button>Sign In</button>
+</a>
+</div>
+
+<!-- Hero Section -->
+<div class="hero">
+    <h1>Learn Smart with AI</h1>
+    <p>Adaptive Quiz System for Personalized Learning</p>
+
+    <div class="search-box">
+        <input type="text" placeholder="Search topics...">
+        <button>🔍</button>
+    </div>
+</div>
+
+<!-- Subjects Section -->
+<div class="subjects">
+    <h2>Subject</h2>
+
+    <form action="/quiz" method="POST">
+        <div class="card-container">
+
+            <button class="card" name="subject" value="Python">🐍 Python</button>
+            <button class="card" name="subject" value="Java">☕ Java</button>
+            <button class="card" name="subject" value="Machine Learning">🤖 ML</button>
+            <button class="card" name="subject" value="Data Science">📊 Data Science</button>
+            <button class="card" name="subject" value="HTML">🌐 HTML</button>
+            <button class="card" name="subject" value="CSS">🎨 CSS</button>
+
+        </div>
+    </form>
+</div>
+
+</body>
+</html>
