@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Quiz Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f4f9;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 220px;
+      background: #023e8a;
+      color: white;
+      height: 100vh;
+      padding-top: 60px;
+      position: fixed;
+      top: 0;
+      left: -220px; /* hidden initially */
+      transition: left 0.3s ease;
+      z-index: 1000;
+    }
+
+    .sidebar.show {
+      left: 0;
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 15px 20px;
+      color: white;
+      text-decoration: none;
+      font-size: 18px;
+    }
+
+    .sidebar a:hover {
+      background: #0353a4;
+    }
+
+    /* Hamburger */
+    .hamburger {
+      position: fixed;
+      top: 15px;
+      left: 15px;
+      font-size: 30px;
+      cursor: pointer;
+      color: #023e8a;
+      z-index: 1001;
+    }
+
+    /* Main content */
+    .main {
+      margin-left: 0;
+      padding: 20px;
+      transition: margin-left 0.3s ease;
+    }
+
+    .main.shift {
+      margin-left: 220px;
+    }
+
+    /* Subject cards */
+    .subjects {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 30px;
+      margin-top: 50px;
+    }
+
+    .subject-card {
+      background: #023e8a;
+      color: white;
+      padding: 60px 0;
+      font-size: 24px;
+      text-align: center;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
+    }
+
+    .subject-card:hover {
+      background: #0353a4;
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+    /* Responsive */
+    @media (max-width: 700px) {
+      .subjects {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Hamburger -->
+  <div class="hamburger" onclick="toggleSidebar()">☰</div>
+
+  <!-- Sidebar Menu -->
+  <div class="sidebar" id="sidebar">
+    <a href="#" onclick="scrollToSubjects()">Subjects</a>
+    <a href="#">Profile</a>
+    <a href="#">Score</a>
+    <a href="#">Performance Graph</a>
+    <a href="#">Settings</a>
+    <a href="#">Logout</a>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main" id="main">
+    <h1>Welcome to AI Quiz Dashboard</h1>
+    <p>Select a subject to start your quiz:</p>
+
+    <!-- Subject Cards -->
+    <div class="subjects" id="subjectsSection">
+      <div class="subject-card" onclick="alert('Python Quiz')">Python</div>
+      <div class="subject-card" onclick="alert('Java Quiz')">Java</div>
+      <div class="subject-card" onclick="alert('Machine Learning Quiz')">ML</div>
+      <div class="subject-card" onclick="alert('HTML Quiz')">HTML</div>
+      <div class="subject-card" onclick="alert('CSS Quiz')">CSS</div>
+      <div class="subject-card" onclick="alert('Data Science Quiz')">Data Science</div>
+    </div>
+  </div>
+
+  <script>
+  // Sidebar toggle
+  function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const main = document.getElementById('main');
+    sidebar.classList.toggle('show');
+    main.classList.toggle('shift');
+  }
+
+  // Scroll to subjects section
+  function scrollToSubjects() {
+    document.getElementById('subjectsSection').scrollIntoView({ behavior: 'smooth' });
+  }
+// Start Quiz (IMPORTANT PART)
+function startQuiz(subject) {
+
+  // Save selected subject
+  localStorage.setItem("selectedSubject", subject);
+
+  // Redirect to quiz page
+  window.location.href = "quiz.html";   // 👈 your quiz page file name
+}
+
+</script>
+</body>
+</html>
